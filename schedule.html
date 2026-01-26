@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Schedule</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 10px;
+            overflow-x: auto;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            height: calc(100vh - 20px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.95;
+        }
+
+        .schedule-container {
+            padding: 10px;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 0.85em;
+        }
+
+        .schedule-table th {
+            background: #e8f5e9;
+            padding: 8px 6px;
+            text-align: left;
+            font-weight: 600;
+            color: #2e7d32;
+            border-bottom: 2px solid #4caf50;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .schedule-table th:first-child {
+            width: 60px;
+            min-width: 60px;
+        }
+
+        .schedule-table td {
+            padding: 4px 6px;
+            border-bottom: 1px solid #e8f5e9;
+            vertical-align: top;
+            height: 40px;
+        }
+
+        .schedule-table tr:hover {
+            background: #f1f8f4;
+        }
+
+        .time-slot {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .session-card {
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+            padding: 6px 8px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 0.85em;
+        }
+
+        .session-card:hover {
+            transform: translateX(3px);
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .module-name {
+            font-weight: 600;
+            color: #1b5e20;
+            margin-bottom: 3px;
+            font-size: 0.95em;
+            line-height: 1.2;
+        }
+
+        .module-id {
+            color: #2e7d32;
+            font-size: 0.8em;
+            margin-bottom: 3px;
+        }
+
+        .education-type {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            margin-top: 3px;
+        }
+
+        .place {
+            color: #388e3c;
+            font-size: 0.8em;
+            margin-top: 3px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                height: calc(100vh - 10px);
+                border-radius: 8px;
+            }
+
+            .header {
+                padding: 10px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.2em;
+                margin-bottom: 3px;
+            }
+
+            .header p {
+                font-size: 0.8em;
+            }
+
+            .schedule-container {
+                padding: 5px;
+            }
+
+            .schedule-table {
+                font-size: 0.7em;
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .schedule-table thead {
+                display: table-header-group;
+            }
+
+            .schedule-table tbody {
+                display: table-row-group;
+            }
+
+            .schedule-table th,
+            .schedule-table td {
+                padding: 4px;
+                min-width: 80px;
+            }
+
+            .schedule-table th:first-child {
+                width: 50px;
+                min-width: 50px;
+                position: sticky;
+                left: 0;
+                background: #e8f5e9;
+                z-index: 11;
+            }
+
+            .schedule-table td:first-child {
+                position: sticky;
+                left: 0;
+                background: white;
+                z-index: 5;
+            }
+
+            .time-slot {
+                padding: 3px 6px;
+                font-size: 0.8em;
+            }
+
+            .session-card {
+                padding: 4px 6px;
+                font-size: 0.75em;
+            }
+
+            .module-name {
+                font-size: 0.85em;
+            }
+
+            .module-id {
+                font-size: 0.75em;
+            }
+
+            .education-type {
+                font-size: 0.7em;
+                padding: 2px 4px;
+            }
+
+            .place {
+                font-size: 0.75em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .schedule-table {
+                font-size: 0.65em;
+            }
+
+            .schedule-table th,
+            .schedule-table td {
+                padding: 3px;
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Samuel Hellqvist</h1>
+            <p>Weekly module schedule</p>
+        </div>
+        <div class="schedule-container">
+            <div id="loading" class="loading">Loading schedule...</div>
+            <div id="error" class="error" style="display: none;"></div>
+            <table class="schedule-table" id="scheduleTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Days of the week in order
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        
+        // Generate time slots from 8:00 to 17:00 in hourly intervals (compact range)
+        function generateTimeSlots() {
+            const slots = [];
+            for (let hour = 8; hour <= 17; hour++) {
+                slots.push(`${hour.toString().padStart(2, '0')}:00`);
+            }
+            return slots;
+        }
+
+        // Convert time string to minutes for comparison
+        function timeToMinutes(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        // Find which time slot a session belongs to
+        function findTimeSlotIndex(startTime, timeSlots) {
+            const startMinutes = timeToMinutes(startTime);
+            for (let i = 0; i < timeSlots.length; i++) {
+                const slotMinutes = timeToMinutes(timeSlots[i]);
+                if (startMinutes >= slotMinutes && startMinutes < slotMinutes + 60) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        // Calculate row span based on duration
+        function calculateRowSpan(startTime, endTime) {
+            const start = timeToMinutes(startTime);
+            const end = timeToMinutes(endTime);
+            const duration = end - start;
+            // Each row represents 1 hour, so calculate how many rows needed
+            return Math.ceil(duration / 60);
+        }
+
+        // Load and display schedule
+        async function loadSchedule() {
+            try {
+                const response = await fetch('week.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('scheduleTable').style.display = 'table';
+                
+                displaySchedule(data);
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = `Error loading schedule: ${error.message}`;
+            }
+        }
+
+        function displaySchedule(data) {
+            const timeSlots = generateTimeSlots();
+            const scheduleBody = document.getElementById('scheduleBody');
+            
+            // Initialize schedule grid: [timeSlot][day] = []
+            const scheduleGrid = {};
+            timeSlots.forEach(slot => {
+                scheduleGrid[slot] = {};
+                days.forEach(day => {
+                    scheduleGrid[slot][day] = [];
+                });
+            });
+
+            // Populate schedule grid with sessions
+            data.modules.forEach(module => {
+                module.sessions.forEach(session => {
+                    const slotIndex = findTimeSlotIndex(session.time.start, timeSlots);
+                    if (slotIndex !== -1) {
+                        const timeSlot = timeSlots[slotIndex];
+                        scheduleGrid[timeSlot][session.day_of_week].push({
+                            ...session,
+                            module_name: module.module_name,
+                            module_id: module.module_id
+                        });
+                    }
+                });
+            });
+
+            // Create table rows
+            timeSlots.forEach((timeSlot, index) => {
+                const row = document.createElement('tr');
+                
+                // Time column
+                const timeCell = document.createElement('td');
+                timeCell.innerHTML = `<span class="time-slot">${timeSlot}</span>`;
+                row.appendChild(timeCell);
+
+                // Day columns
+                days.forEach(day => {
+                    const cell = document.createElement('td');
+                    const sessions = scheduleGrid[timeSlot][day];
+                    
+                    if (sessions.length > 0) {
+                        sessions.forEach(session => {
+                            const card = document.createElement('div');
+                            card.className = 'session-card';
+                            
+                            const rowSpan = calculateRowSpan(session.time.start, session.time.end);
+                            if (rowSpan > 1) {
+                                card.style.height = `${rowSpan * 40 - 8}px`;
+                            }
+                            
+                            card.innerHTML = `
+                                <div class="module-name">${session.module_name}</div>
+                                <div class="module-id">${session.module_id}</div>
+                                <div class="education-type">${session.education_type}</div>
+                                <div class="place">📍 ${session.place}</div>
+                                <div style="margin-top: 8px; font-size: 0.85em; color: #666;">
+                                    ${session.time.start} - ${session.time.end}
+                                </div>
+                            `;
+                            cell.appendChild(card);
+                        });
+                    }
+                    
+                    row.appendChild(cell);
+                });
+
+                scheduleBody.appendChild(row);
+            });
+        }
+
+        // Load schedule when page loads
+        loadSchedule();
+    </script>
+</body>
+</html>
+

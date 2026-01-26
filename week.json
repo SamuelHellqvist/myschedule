@@ -1,0 +1,133 @@
+{
+  "modules": [
+    {
+      "module_name": "Computer-Supported Cooperative Work",
+      "module_id": "CS4458",
+      "sessions": [
+        {
+          "day_of_week": "Monday",
+          "time": {
+            "start": "09:00",
+            "end": "11:00"
+          },
+          "education_type": "Lab 2A",
+          "place": "CS3005A"
+        },
+        {
+          "day_of_week": "Monday",
+          "time": {
+            "start": "14:00",
+            "end": "16:00"
+          },
+          "education_type": "Lecture",
+          "place": "P1004"
+        }
+      ]
+    },
+    {
+      "module_name": "Data Mining",
+      "module_id": "CS4168",
+      "sessions": [
+        {
+          "day_of_week": "Monday",
+          "time": {
+            "start": "16:00",
+            "end": "17:00"
+          },
+          "education_type": "Lecture",
+          "place": "P2001"
+        },
+        {
+          "day_of_week": "Tuesday",
+          "time": {
+            "start": "12:00",
+            "end": "14:00"
+          },
+          "education_type": "Lab 2B",
+          "place": "CS2004"
+        }, 
+        {
+            "day_of_week": "Tuesday",
+            "time":{
+                "start": "17:00", 
+                "end": "18:00"
+            },
+            "education_type": "Lecture",
+            "place": "GEMS0016"
+        }
+      ]
+    },
+    {
+      "module_name": "User Experience in Practice",
+      "module_id": "CS4088",
+      "sessions": [
+        {
+          "day_of_week": "Wednesday",
+          "time": {
+            "start": "11:00",
+            "end": "12:00"
+          },
+          "education_type": "Tutorial 3A",
+          "place": "C0078"
+        },
+        {
+          "day_of_week": "Friday",
+          "time": {
+            "start": "12:00",
+            "end": "14:00"
+          },
+          "education_type": "Lecture",
+          "place": "CS0048"
+        }
+      ]
+    },
+    {
+      "module_name": "Writing Games Analysis",
+      "module_id": "CS4067",
+      "sessions": [
+        {
+          "day_of_week": "Wednesday",
+          "time": {
+            "start": "12:00",
+            "end": "14:00"
+          },
+          "education_type": "Lab 2A",
+          "place": "CS3004B"
+        },
+        {
+          "day_of_week": "Thursday",
+          "time": {
+            "start": "10:00",
+            "end": "12:00"
+          },
+          "education_type": "Lecture",
+          "place": "CS4067"
+        }
+      ]
+    },
+    {
+      "module_name": "Project Management and Practice",
+      "module_id": "CS4457",
+      "sessions": [
+        {
+          "day_of_week": "Thursday",
+          "time": {
+            "start": "09:00",
+            "end": "10:00"
+          },
+          "education_type": "Lab 2A",
+          "place": "CS1004"
+        },
+        {
+          "day_of_week": "Thursday",
+          "time": {
+            "start": "12:00",
+            "end": "13:00"
+          },
+          "education_type": "Lecture",
+          "place": "CS4457"
+        }
+      ]
+    }
+  ]
+}
