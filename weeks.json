@@ -62,7 +62,7 @@
       "module_id": "CS4088",
       "sessions": [
         {
-          "day_of_week": "Wednesday",
+          "day_of_week": "Thursday",
           "time": {
             "start": "11:00",
             "end": "12:00"
@@ -126,6 +126,15 @@
           },
           "education_type": "Lecture",
           "place": "CS4457"
+        }, 
+        {
+          "day_of_week": "Thursday",
+          "time":{
+            "start": "14:00", 
+            "end": "15:00"
+          },
+          "education_type": "Tutorial 3B",
+          "place": "S117"
         }
       ]
     }
