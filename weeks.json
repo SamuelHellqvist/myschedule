@@ -3,12 +3,13 @@
     {
       "module_name": "Computer-Supported Cooperative Work",
       "module_id": "CS4458",
+      "color": "purple",
       "sessions": [
         {
           "day_of_week": "Monday",
           "time": {
-            "start": "09:00",
-            "end": "11:00"
+            "start": "12:00",
+            "end": "14:00"
           },
           "education_type": "Lab 2A",
           "place": "CS3005A"
@@ -27,7 +28,17 @@
     {
       "module_name": "Data Mining",
       "module_id": "CS4168",
+      "color": "blue",
       "sessions": [
+        {
+          "day_of_week": "Monday",
+          "time": {
+            "start": "10:00",
+            "end": "12:00"
+          },
+          "education_type": "Lab 2A",
+          "place": "CS2004"
+        },
         {
           "day_of_week": "Monday",
           "time": {
@@ -35,31 +46,23 @@
             "end": "17:00"
           },
           "education_type": "Lecture",
-          "place": "P2001"
+          "place": "KBG12"
         },
         {
           "day_of_week": "Tuesday",
           "time": {
-            "start": "12:00",
-            "end": "14:00"
+            "start": "17:00",
+            "end": "18:00"
           },
-          "education_type": "Lab 2B",
-          "place": "CS2004"
-        }, 
-        {
-            "day_of_week": "Tuesday",
-            "time":{
-                "start": "17:00", 
-                "end": "18:00"
-            },
-            "education_type": "Lecture",
-            "place": "GEMS0016"
+          "education_type": "Lecture",
+          "place": "GEMS0016"
         }
       ]
     },
     {
       "module_name": "User Experience in Practice",
       "module_id": "CS4088",
+      "color": "green",
       "sessions": [
         {
           "day_of_week": "Thursday",
@@ -69,72 +72,56 @@
           },
           "education_type": "Tutorial 3A",
           "place": "C0078"
-        },
-        {
-          "day_of_week": "Friday",
-          "time": {
-            "start": "12:00",
-            "end": "14:00"
-          },
-          "education_type": "Lecture",
-          "place": "CS0048"
         }
       ]
     },
     {
-      "module_name": "Writing Games Analysis",
-      "module_id": "CS4067",
+      "module_name": "Interactive Multimedia",
+      "module_id": "CS4358",
+      "color": "yellow",
       "sessions": [
         {
           "day_of_week": "Wednesday",
           "time": {
-            "start": "12:00",
-            "end": "14:00"
+            "start": "10:30",
+            "end": "13:00"
           },
           "education_type": "Lab 2A",
-          "place": "CS3004B"
-        },
-        {
-          "day_of_week": "Thursday",
-          "time": {
-            "start": "10:00",
-            "end": "12:00"
-          },
-          "education_type": "Lecture",
-          "place": "CS4067"
+          "place": "CS1045"
         }
       ]
     },
     {
       "module_name": "Project Management and Practice",
       "module_id": "CS4457",
+      "color": "red",
       "sessions": [
         {
-          "day_of_week": "Thursday",
+          "day_of_week": "Tuesday",
           "time": {
-            "start": "09:00",
-            "end": "10:00"
+            "start": "11:00",
+            "end": "12:00"
           },
-          "education_type": "Lab 2A",
-          "place": "CS1004"
+          "education_type": "Lab 2C",
+          "place": "CS1044"
         },
         {
-          "day_of_week": "Thursday",
+          "day_of_week": "Tuesday",
           "time": {
-            "start": "12:00",
-            "end": "13:00"
+            "start": "13:00",
+            "end": "14:00"
           },
-          "education_type": "Lecture",
-          "place": "CS4457"
+          "education_type": "Tutorial 3C",
+          "place": "S115"
         }, 
         {
           "day_of_week": "Thursday",
           "time":{
-            "start": "14:00", 
-            "end": "15:00"
+            "start": "12:00", 
+            "end": "14:00"
           },
-          "education_type": "Tutorial 3B",
-          "place": "S117"
+          "education_type": "Lecture",
+          "place": "FB028"
         }
       ]
     }

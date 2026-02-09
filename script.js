@@ -1,123 +1,103 @@
-const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-const startHour = 8; // 8 AM
-const endHour = 20; // 8 PM
-const hoursInDay = endHour - startHour;
-
-function timeToMinutes(timeStr) {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    return hours * 60 + minutes;
-}
-
-function calculatePosition(startTime, endTime) {
-    const startMinutes = timeToMinutes(startTime);
-    const endMinutes = timeToMinutes(endTime);
-    const startHourMinutes = startHour * 60;
-    
-    const top = ((startMinutes - startHourMinutes) / 60) * 123; // 123px per hour
-    const height = ((endMinutes - startMinutes) / 60) * 123; // 123px per hour
-    
-    return { top, height };
-}
+const DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const DEFAULT_COLOR = '#64748b';
 
 async function loadSchedule() {
-    try {
-        const response = await fetch('weeks.json');
-        const data = await response.json();
-        displaySchedule(data.modules);
-    } catch (error) {
-        console.error('Error loading schedule:', error);
-        document.getElementById('schedule').innerHTML = '<p>Error loading schedule. Please check weeks.json file.</p>';
-    }
+  const res = await fetch('weeks.json');
+  const data = await res.json();
+
+  const sessionsByDay = {};
+  DAY_ORDER.forEach(day => { sessionsByDay[day] = []; });
+
+  data.modules.forEach(module => {
+    const color = module.color || DEFAULT_COLOR;
+    const name = module.module_name;
+    const id = module.module_id;
+
+    (module.sessions || []).forEach(session => {
+      const day = session.day_of_week;
+      if (sessionsByDay[day]) {
+        sessionsByDay[day].push({
+          ...session,
+          moduleName: name,
+          moduleId: id,
+          color
+        });
+      }
+    });
+  });
+
+  DAY_ORDER.forEach(day => {
+    sessionsByDay[day].sort((a, b) => {
+      const tA = a.time?.start || '00:00';
+      const tB = b.time?.start || '00:00';
+      return tA.localeCompare(tB);
+    });
+  });
+
+  renderWeek(sessionsByDay);
 }
 
-function displaySchedule(modules) {
-    const scheduleGrid = document.getElementById('schedule');
-    scheduleGrid.innerHTML = '';
+function renderWeek(sessionsByDay) {
+  const weekEl = document.getElementById('week');
+  weekEl.innerHTML = '';
 
-    // Create time column
-    const timeColumn = document.createElement('div');
-    timeColumn.className = 'time-column';
-    
-    const timeHeader = document.createElement('div');
-    timeHeader.className = 'time-slot';
-    timeColumn.appendChild(timeHeader);
-    
-    for (let hour = startHour; hour < endHour; hour++) {
-        const timeSlot = document.createElement('div');
-        timeSlot.className = 'time-slot';
-        const displayHour = hour > 12 ? hour - 12 : hour;
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        timeSlot.textContent = `${displayHour}:00 ${ampm}`;
-        timeColumn.appendChild(timeSlot);
+  const grid = document.createElement('div');
+  grid.className = 'week-grid';
+
+  DAY_ORDER.forEach(day => {
+    const column = document.createElement('div');
+    column.className = 'day-column';
+    column.innerHTML = `<h2 class="day-title">${day}</h2>`;
+
+    const list = document.createElement('div');
+    list.className = 'day-sessions';
+
+    sessionsByDay[day].forEach(session => {
+      list.appendChild(createSessionCard(session));
+    });
+
+    if (sessionsByDay[day].length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'day-empty';
+      empty.textContent = 'No sessions';
+      list.appendChild(empty);
     }
-    
-    scheduleGrid.appendChild(timeColumn);
 
-    // Create day columns
-    const dayColumns = {};
-    daysOfWeek.forEach(day => {
-        dayColumns[day] = [];
-    });
+    column.appendChild(list);
+    grid.appendChild(column);
+  });
 
-    // Group sessions by day
-    modules.forEach(module => {
-        module.sessions.forEach(session => {
-            if (dayColumns[session.day_of_week]) {
-                dayColumns[session.day_of_week].push({
-                    ...session,
-                    module_name: module.module_name,
-                    module_id: module.module_id
-                });
-            }
-        });
-    });
-
-    // Create and display day columns
-    daysOfWeek.forEach(day => {
-        const dayColumn = document.createElement('div');
-        dayColumn.className = 'day-column';
-        
-        const dayHeader = document.createElement('div');
-        dayHeader.className = 'day-header';
-        dayHeader.textContent = day.substring(0, 3);
-        dayColumn.appendChild(dayHeader);
-
-        // Create time rows
-        for (let hour = startHour; hour < endHour; hour++) {
-            const timeRow = document.createElement('div');
-            timeRow.className = 'time-row';
-            dayColumn.appendChild(timeRow);
-        }
-
-        // Add sessions positioned absolutely
-        dayColumns[day].forEach(session => {
-            const position = calculatePosition(session.time.start, session.time.end);
-            
-            const sessionDiv = document.createElement('div');
-            sessionDiv.className = 'session';
-            sessionDiv.style.top = `${position.top + 50}px`; // 50px for header
-            sessionDiv.style.height = `${position.height - 4}px`; // -4px for margins
-            
-            sessionDiv.innerHTML = `
-                <div class="session-title-id">
-                    <span class="session-title">${session.module_name}</span>
-                    <span class="session-id">${session.module_id}</span>
-                </div>
-                <div class="session-time-place">
-                    <span class="session-time">${session.time.start} - ${session.time.end}</span>
-                    <span class="session-place">📍 ${session.place}</span>
-                </div>
-                <div class="session-details">
-                    <span class="session-type">${session.education_type}</span>
-                </div>
-            `;
-            
-            dayColumn.appendChild(sessionDiv);
-        });
-
-        scheduleGrid.appendChild(dayColumn);
-    });
+  weekEl.appendChild(grid);
 }
 
-// Load schedule when page loads
-loadSchedule();
+function createSessionCard(session) {
+  const card = document.createElement('div');
+  card.className = 'session-card';
+  card.style.setProperty('--accent', session.color);
+
+  const start = session.time?.start ?? '–';
+  const end = session.time?.end ?? '–';
+  const time = `${start} – ${end}`;
+
+  card.innerHTML = `
+    <div class="session-time">${time}</div>
+    <div class="session-module">${escapeHtml(session.moduleName)}</div>
+    <div class="session-meta">${escapeHtml(session.education_type || '')} · ${escapeHtml(session.place || '')}</div>
+  `;
+
+  return card;
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+loadSchedule().catch(err => {
+  document.getElementById('week').innerHTML = `<p class="error">Could not load schedule: ${err.message}</p>`;
+});
+
+document.getElementById('to-top').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
