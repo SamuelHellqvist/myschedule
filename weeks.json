@@ -72,6 +72,15 @@
           },
           "education_type": "Tutorial 3A",
           "place": "C0078"
+        },
+        {
+          "day_of_week": "Thursday",
+          "time": {
+            "start": "15:00",
+            "end": "17:00"
+          },
+          "education_type": "Lecture",
+          "place": "A1051"
         }
       ]
     },
