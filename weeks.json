@@ -92,11 +92,11 @@
         {
           "day_of_week": "Wednesday",
           "time": {
-            "start": "10:30",
+            "start": "10:00",
             "end": "13:00"
           },
-          "education_type": "Lab 2A",
-          "place": "CS1045"
+          "education_type": "Workshop",
+          "place": "CSCS2045"
         }
       ]
     },
